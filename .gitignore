@@ -9,6 +9,7 @@ __pycache__/
 # Data
 data/raw/
 data/processed/
+.kaggle/
 
 
 # Distribution / packaging
