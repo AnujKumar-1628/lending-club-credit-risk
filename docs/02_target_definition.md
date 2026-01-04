@@ -1,11 +1,20 @@
-Target Definition
+Target Variable Definition
 
-Purpose of the Target
-The purpose of defining a target variable in this project is to clearly specify what is meant by a “bad loan” from a credit risk perspective.
+The goal of this project is to predict whether a loan will default or be fully paid.
+The target variable is created using the loan status provided in the dataset.
 
-Definition of Default
-In this project, a loan is considered to have defaulted if it enters a state of charge-off within a fixed performance window after approval. A loan is labeled as a default if its loan status is recorded as “Charged Off” or “Default” during the observation period. Loans that are marked as “Fully Paid” are considered non-defaults. Loans with intermediate statuses such as “Late (16–30 days)” or “Late (31–120 days)” are not directly treated as defaults, as these states do not necessarily indicate permanent credit loss.
+We define the target as a binary variable:
 
-Performance Window
-To ensure that each loan has sufficient time to demonstrate its repayment behavior, a fixed performance window is applied. Only loans that have had at least 12 months of performance history since origination are included in the target definition.
-Loans that are too recent and have not yet completed the performance window are excluded from modeling, as their final outcomes are not fully observable.
+1 - Loan is Charged Off (customer failed to repay the loan)
+
+0 - Loan is Fully Paid
+
+Only loans with a final and known outcome are used for training the model.
+
+Handling Ongoing Loans
+
+Loans with status such as “Current” are excluded from the dataset.
+These loans are still active, and their final outcome (default or full payment) is not yet known.
+
+Including them would introduce uncertainty and make the model unrealistic, since at the time of prediction we only want to learn from loans with completed outcomes.
+
