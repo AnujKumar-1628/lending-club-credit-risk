@@ -1,0 +1,6 @@
+# include main requirements
+-r requirements.txt
+
+# testing
+pytest>=9.0.2
+pytest-cov>=7.0.0
