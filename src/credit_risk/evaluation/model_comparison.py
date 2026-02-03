@@ -1,4 +1,11 @@
+"""
+Model comparison utilities
+
+
+"""
+
 import pandas as pd
+from typing import Dict
 
 from credit_risk.evaluation.metrics import evaluate_classification
 from credit_risk.utils.logging import get_logger
@@ -6,9 +13,14 @@ from credit_risk.utils.logging import get_logger
 logger = get_logger(__name__)
 
 
-def compare_models(models: dict, X, y, threshold: float = 0.5) -> pd.DataFrame:
+def compare_models(
+    models: Dict[str, object],
+    X,
+    y,
+    threshold: float = 0.5,
+) -> pd.DataFrame:
     """
-    Compare multiple trained models on the same dataset.
+    Compare multiple classification models on the same dataset.
 
     Parameters
     ----------
@@ -19,22 +31,27 @@ def compare_models(models: dict, X, y, threshold: float = 0.5) -> pd.DataFrame:
     y : array-like
         True labels
     threshold : float
-        Decision threshold for confusion matrix
+        Classification threshold
 
     Returns
     -------
     pd.DataFrame
-        Comparison table with ROC-AUC, KS, and confusion matrix
+        Comparison table with metrics
     """
-
-    logger.info("Starting model comparison")
 
     results = []
 
-    for name, model in models.items():
-        logger.info(f"Evaluating model: {name}")
+    for model_name, model in models.items():
+        logger.info(f"Evaluating model: {model_name}")
 
-        y_prob = model.predict_proba(X)
+        # Predict probabilities (STANDARDIZED CONTRACT)
+
+        y_prob_2d = model.predict_proba(X)
+
+        # Slice positive class probability
+        y_prob = y_prob_2d[:, 1]
+
+        # Evaluate metrics
 
         metrics = evaluate_classification(
             y_true=y,
@@ -44,17 +61,12 @@ def compare_models(models: dict, X, y, threshold: float = 0.5) -> pd.DataFrame:
 
         results.append(
             {
-                "model": name,
+                "model": model_name,
                 "roc_auc": metrics["roc_auc"],
                 "ks": metrics["ks"],
-                "tn": metrics["confusion_matrix"][0, 0],
-                "fp": metrics["confusion_matrix"][0, 1],
-                "fn": metrics["confusion_matrix"][1, 0],
-                "tp": metrics["confusion_matrix"][1, 1],
             }
         )
 
-    comparison_df = pd.DataFrame(results).sort_values(by="ks", ascending=False)
+    comparison_df = pd.DataFrame(results).sort_values(by="roc_auc", ascending=False)
 
-    logger.info("Model comparison completed")
-    return comparison_df
+    return comparison_df.reset_index(drop=True)
