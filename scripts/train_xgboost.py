@@ -16,6 +16,7 @@ MODEL_DIR = project_root / "models" / "xgboost"
 MODEL_DIR.mkdir(parents=True, exist_ok=True)
 
 MODEL_PATH = MODEL_DIR / "model.pkl"
+FEATURE_BUILDER_PATH = MODEL_DIR / "feature_builder.pkl"
 METRICS_PATH = MODEL_DIR / "metrics.json"
 
 
@@ -26,9 +27,13 @@ def main():
     splitter = DataSplitter()
     train_df, val_df, _ = splitter.split(df)
 
+    # Feature Engineering (FIT)
+
     feature_builder = FeatureBuilder()
     X_train, y_train = feature_builder.build_features(train_df, fit=True)
     X_val, y_val = feature_builder.build_features(val_df, fit=False)
+
+    # Model Training
 
     model = XGBoostModel()
     model = train_model(
@@ -39,13 +44,20 @@ def main():
         y_val=y_val,
     )
 
-    y_val_proba = model.predict_proba(X_val)
+    # Validation
+
+    y_val_proba = model.predict_proba(X_val)[:, 1]
 
     metrics = evaluate_classification(
         y_true=y_val,
         y_prob=y_val_proba,
         threshold=0.5,
     )
+
+    # Save Artifacts
+
+    joblib.dump(model, MODEL_PATH)
+    joblib.dump(feature_builder, FEATURE_BUILDER_PATH)
 
     with open(METRICS_PATH, "w") as f:
         json.dump(
@@ -57,8 +69,6 @@ def main():
             f,
             indent=4,
         )
-
-    joblib.dump(model, MODEL_PATH)
 
     logger.info("XGBoost training pipeline completed successfully")
 
