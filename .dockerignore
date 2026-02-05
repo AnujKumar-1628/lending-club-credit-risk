@@ -1,0 +1,16 @@
+.git
+__pycache__/
+*.pyc
+venv/
+.env
+data/
+datasets/
+*.csv
+*.parquet
+*.zip
+tests/
+docs/
+.ipynb_checkpoints/
+.pytest_cache/
+.DS_Store
+
