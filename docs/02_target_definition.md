@@ -1,4 +1,4 @@
-Target Variable Definition
+ ## Target Variable Definition
 
 The goal of this project is to predict whether a loan will default or be fully paid.
 The target variable is created using the loan status provided in the dataset.

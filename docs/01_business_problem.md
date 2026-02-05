@@ -1,4 +1,4 @@
-Business Problem 
+## Business Problem 
 
 Lending companies give loans to customers and expect them to pay back the money over time. However, not all customers repay their loans fully. Some customers stop paying and the loan is marked as charged off, which causes financial loss to the company.
 
