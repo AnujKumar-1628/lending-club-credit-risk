@@ -4,3 +4,10 @@
 # testing
 pytest>=9.0.2
 pytest-cov>=7.0.0
+
+# notebooks 
+jupyter>=1.1.0
+ipykernel>=6.29.0
+
+# api testing 
+ httpx>= 0.28.1
