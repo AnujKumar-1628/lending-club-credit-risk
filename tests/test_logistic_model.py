@@ -1,0 +1,22 @@
+from credit_risk.models.logistic_model import LogisticSGDModel
+from credit_risk.features.build_features import FeatureBuilder
+from credit_risk.data.load_data import load_cleaned_data
+from credit_risk.data.split_data import DataSplitter
+
+
+def test_logistic_model_train_predict():
+    df = load_cleaned_data().head(5000)
+
+    splitter = DataSplitter()
+    train_df, val_df, _ = splitter.split(df)
+
+    fb = FeatureBuilder()
+    X_train, y_train = fb.build_features(train_df, fit=True)
+    X_val, y_val = fb.build_features(val_df, fit=False)
+
+    model = LogisticSGDModel()
+    model.train(X_train, y_train)
+
+    preds = model.predict_proba(X_val)
+
+    assert len(preds) == len(X_val)
