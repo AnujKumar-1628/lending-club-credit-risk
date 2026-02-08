@@ -22,141 +22,123 @@ Lenders need to estimate the probability that a loan will default at application
 Only loans with final outcomes are used for training. Ongoing loans (for example, "Current") are excluded to avoid label uncertainty.
 
 **Project Structure**
-lendingclub-credit-risk/
-lendingclub-credit-risk/
-│
-├── api/                          # FastAPI application
-│   ├── __init__.py
-│   ├── app.py                    # Main FastAPI app
-│   ├── dependencies.py           # Dependency injection (load model artifacts)
-│   ├── schemas.py                # Pydantic models for request/response
-│   └── routes/
-│       ├── __init__.py
-│       └── predict.py            # Prediction endpoints
-│
-├── src/credit_risk/              # Core ML package
-│   ├── data/                     # Data processing modules
-│   │   ├── load_data.py          # Data loading utilities
-│   │   ├── clean_data.py         # Data cleaning logic
-│   │   └── split_data.py         # Train-validation splitting
-│   │
-│   ├── features/                 # Feature engineering
-│   │   └── build_features.py     # FeatureBuilder class
-│   │
-│   ├── models/                   # Model definitions
-│   │   ├── base.py               # Base model interface
-│   │   ├── logistic_model.py     # Logistic regression wrapper
-│   │   ├── xgboost_model.py      # XGBoost wrapper
-│   │   ├── train.py              # Training utilities
-│   │   └── predict.py            # Prediction utilities
-│   │
-│   ├── evaluation/               # Model evaluation
-│   │   ├── metrics.py            # Metric calculations
-│   │   ├── calibration.py        # Probability calibration
-│   │   └── model_comparison.py   # Compare multiple models
-│   │
-│   └── utils/                    # Shared utilities
-│       ├── config.py             # Configuration management
-│       ├── logging.py            # Logging setup
-│       └── paths.py              # Path constants
-│
-├── scripts/                      # Training scripts
-│   ├── train_logistic.py         # Train logistic regression
-│   ├── train_xgboost.py          # Train XGBoost
-│   ├── compare_models.py         # Compare model performance
-│   └── run_split.py              # Generate train/val split
-│
-├── models/                       # Saved model artifacts
-│   ├── logistic/
-│   │   ├── model.pkl
-│   │   ├── feature_builder.pkl
-│   │   ├── metrics.json
-│   │   └── model_card.md
-│   └── xgboost/
-│       ├── model.pkl
-│       ├── feature_builder.pkl
-│       ├── metrics.json
-│       ├── feature_importance.csv
-│       └── model_card.md
-│
-├── notebooks/                    # Jupyter notebooks
-│   ├── exploration/              # EDA notebooks
-│   ├── feature_analysis/         # Feature engineering experiments
-│   ├── modeling/                 # Model training experiments
-│   └── validation/               # Model validation
-│
-├── tests/                        # Test suite
-│   ├── test_api.py               # API endpoint tests
-│   ├── test_features.py          # Feature engineering tests
-│   ├── test_logistic_model.py    # Logistic model tests
-│   ├── test_xgboost_model.py     # XGBoost model tests
-│   └── test_split.py             # Data splitting tests
-│
-├── docs/                         # Documentation
-│   ├── 00_overview.md
-│   ├── 01_business_problem.md
-│   ├── 02_target_definition.md
-│   ├── 03_pipeline_and_features.md
-│   ├── 04_models.md
-│   ├── 05_evaluation.md
-│   ├── 06_artifacts_and_versioning.md
-│   ├── 07_inference_api.md
-│   ├── 08_docker_and_environment.md
-│   ├── 09_testing.md
-│   └── 10_limitations_and_future_work.md
-│
-├── .github/
-│   └── workflows/
-│       └── ci.yml                # GitHub Actions CI pipeline
-│
-├── Dockerfile                    # Docker configuration
-├── requirements.txt              # Production dependencies
-├── requirements-dev.txt          # Development dependencies
-├── setup.py                      # Package installation
-├── README.md                     # This file
-└── LICENSE                       # MIT License
+
+```text
+lending-club-credit-risk/
+|
++-- api/                          # FastAPI application
+|   +-- __init__.py
+|   +-- app.py                    # Main FastAPI app
+|   +-- dependencies.py           # Dependency injection (load model artifacts)
+|   +-- schemas.py                # Pydantic models for request/response
+|   +-- routes/
+|       +-- __init__.py
+|       +-- predict.py            # Prediction endpoints
+|
++-- src/credit_risk/              # Core ML package
+|   +-- data/                     # Data processing modules
+|   |   +-- load_data.py          # Data loading utilities
+|   |   +-- clean_data.py         # Data cleaning logic
+|   |   +-- split_data.py         # Train-validation splitting
+|   |
+|   +-- features/                 # Feature engineering
+|   |   +-- build_features.py     # FeatureBuilder class
+|   |
+|   +-- models/                   # Model definitions
+|   |   +-- base.py               # Base model interface
+|   |   +-- logistic_model.py     # Logistic regression wrapper
+|   |   +-- xgboost_model.py      # XGBoost wrapper
+|   |   +-- train.py              # Training utilities
+|   |   +-- predict.py            # Prediction utilities
+|   |
+|   +-- evaluation/               # Model evaluation
+|   |   +-- metrics.py            # Metric calculations
+|   |   +-- calibration.py        # Probability calibration
+|   |   +-- model_comparison.py   # Compare multiple models
+|   |
+|   +-- utils/                    # Shared utilities
+|       +-- config.py             # Configuration management
+|       +-- logging.py            # Logging setup
+|       +-- paths.py              # Path constants
+|
++-- scripts/                      # Training scripts
+|   +-- train_logistic.py         # Train logistic regression
+|   +-- train_xgboost.py          # Train XGBoost
+|   +-- compare_models.py         # Compare model performance
+|   +-- run_split.py              # Generate train/val split
+|
++-- models/                       # Saved model artifacts
+|   +-- logistic/
+|   |   +-- model.pkl
+|   |   +-- feature_builder.pkl
+|   |   +-- metrics.json
+|   |   +-- model_card.md
+|   +-- xgboost/
+|       +-- model.pkl
+|       +-- feature_builder.pkl
+|       +-- metrics.json
+|       +-- feature_importance.csv
+|       +-- model_card.md
+|
++-- notebooks/                    # Jupyter notebooks
+|   +-- exploration/              # EDA notebooks
+|   +-- feature_analysis/         # Feature engineering experiments
+|   +-- modeling/                 # Model training experiments
+|   +-- validation/               # Model validation
+|
++-- tests/                        # Test suite
+|   +-- test_api.py               # API endpoint tests
+|   +-- test_features.py          # Feature engineering tests
+|   +-- test_logistic_model.py    # Logistic model tests
+|   +-- test_xgboost_model.py     # XGBoost model tests
+|   +-- test_split.py             # Data splitting tests
+|
++-- docs/                         # Documentation
+|   +-- 00_overview.md
+|   +-- 01_business_problem.md
+|   +-- 02_target_definition.md
+|   +-- 03_pipeline_and_features.md
+|   +-- 04_models.md
+|   +-- 05_evaluation.md
+|   +-- 06_artifacts_and_versioning.md
+|   +-- 07_inference_api.md
+|   +-- 08_docker_and_environment.md
+|   +-- 09_testing.md
+|   +-- 10_limitations_and_future_work.md
+|
++-- .github/
+|   +-- workflows/
+|       +-- ci.yml                # GitHub Actions CI pipeline
+|
++-- Dockerfile                    # Docker configuration
++-- requirements.txt              # Production dependencies
++-- requirements-dev.txt          # Development dependencies
++-- setup.py                      # Package installation
++-- README.md                     # This file
++-- LICENSE                       # MIT License
+```
 
 **Project Architecture**
-┌─────────────────────────────────────────────────────────────────┐
-│                         DATA LAYER                               │
-├─────────────────────────────────────────────────────────────────┤
-│  Raw Data → Data Cleaning → Train/Val Split → Feature Engineering │
-└────────────────────────┬────────────────────────────────────────┘
-                         │
-                         ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                      MODELING LAYER                              │
-├─────────────────────────────────────────────────────────────────┤
-│  • Logistic Regression (Baseline)                               │
-│  • XGBoost Classifier (Production Model)                        │
-│  • Hyperparameter Tuning & Cross-Validation                     │
-└────────────────────────┬────────────────────────────────────────┘
-                         │
-                         ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                     EVALUATION LAYER                             │
-├─────────────────────────────────────────────────────────────────┤
-│  Metrics: ROC-AUC, KS Statistic, Confusion Matrix              │
-│  Model Comparison & Selection                                    │
-└────────────────────────┬────────────────────────────────────────┘
-                         │
-                         ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                  INFERENCE API LAYER                             │
-├─────────────────────────────────────────────────────────────────┤
-│  FastAPI REST Endpoints                                          │
-│  • /predict (Single Loan)                                       │
-│  • /predict/batch (Multiple Loans)                             │
-│  • /health (System Health Check)                                │
-└────────────────────────┬────────────────────────────────────────┘
-                         │
-                         ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                   DEPLOYMENT LAYER                               │
-├─────────────────────────────────────────────────────────────────┤
-│  Docker Container → CI           │
-└─────────────────────────────────────────────────────────────────┘
-
+```text
+[Data Layer]
+Raw CSV -> Cleaning -> Time-based Split -> Feature Builder
+    |
+    v
+[Modeling Layer]
+Logistic SGD (baseline) + XGBoost (primary)
+    |
+    v
+[Evaluation Layer]
+ROC-AUC, KS, confusion matrix, model comparison
+    |
+    v
+[Serving Layer]
+FastAPI endpoints: /predict, /predict/batch, /health
+    |
+    v
+[Deployment Layer]
+Docker image + CI workflow
+```
 **Dataset**
 LendingClub accepted loans (2007 to 2018Q4). Raw file expected at:
 - `data/raw/accepted_2007_to_2018Q4.csv` 
