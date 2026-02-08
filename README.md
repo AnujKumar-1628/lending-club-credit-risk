@@ -180,15 +180,21 @@ mkdir -p data/raw
 ```bash
 python scripts/run_split.py
 ```
+![Project Screenshot](docs/images/run_split.png)
+
 5. Train models:
 ```bash
 python scripts/train_logistic.py
 python scripts/train_xgboost.py
 ```
+![Project Screenshot](docs/images/train_logistic.png)
+![Project Screenshot](docs/images/train_xgboost.png)
+
 6. Compare models:
 ```bash
 python scripts/compare_models.py
 ```
+![Project Screenshot](docs/images/compare_models.png)
 
 ## Inference API
 Start the API:
@@ -207,6 +213,9 @@ Low Risk (< 30% default probability) → Approve
 Medium Risk (30-60% default probability) → Review
 High Risk (> 60% default probability) → Reject
 ```
+![Project Screenshot](docs/images/predict.png)
+
+![Project Screenshot](docs/images/predict_batch.png)
 
 ## Docker
 Build and run the container:
@@ -214,12 +223,16 @@ Build and run the container:
 docker build -t  anujmahlawat/credit-risk-api .
 docker run -p 8000:8000  anujmahlawat/credit-risk-api
 ```
+![Project Screenshot](docs/images/build_docker.png)
+
+
 
 
 ## Testing
 ```bash
 pytest
 ```
+![Project Screenshot](docs/images/tests.png)
 
 ## Artifacts and reproducibility
 For each model, the repo stores:
