@@ -201,6 +201,9 @@ Start the API:
 ```bash
 python -m uvicorn api.app:app --host 0.0.0.0 --port 8000 --reload
 ```
+ ![Project Screenshot](docs/images/predict.png)
+
+ ![Project Screenshot](docs/images/predict_batch.png)
 
 Endpoints:
 - `GET /health`
@@ -213,9 +216,6 @@ Low Risk (< 30% default probability) → Approve
 Medium Risk (30-60% default probability) → Review
 High Risk (> 60% default probability) → Reject
 ```
-![Project Screenshot](docs/images/predict.png)
-
-![Project Screenshot](docs/images/predict_batch.png)
 
 ## Docker
 Build and run the container:
