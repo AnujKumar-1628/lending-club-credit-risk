@@ -23,6 +23,7 @@ Only loans with final outcomes are used for training. Ongoing loans (for example
 
 **Project Structure**
 lendingclub-credit-risk/
+lendingclub-credit-risk/
 │
 ├── api/                          # FastAPI application
 │   ├── __init__.py
