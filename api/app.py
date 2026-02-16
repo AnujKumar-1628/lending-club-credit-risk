@@ -1,28 +1,22 @@
 from fastapi import FastAPI
 from api.routes.predict import router
 
-# -------------------------------------------------
-# FastAPI app initialization
-# -------------------------------------------------
-app = FastAPI(
-    title="Credit Risk Prediction API",
-    version="1.0.0",
-)
+def create_app() -> FastAPI:
+    app = FastAPI(
+        title="Credit Risk Prediction API",
+        version="1.0.0",
+    )
+
+    @app.get("/")
+    def root():
+        return {
+            "status": "running",
+            "message": "Credit Risk API is up",
+            "docs": "/docs",
+        }
+
+    app.include_router(router)
+    return app
 
 
-# -------------------------------------------------
-# Simple root endpoint (sanity check)
-# -------------------------------------------------
-@app.get("/")
-def root():
-    return {
-        "status": "running",
-        "message": "Credit Risk API is up",
-        "docs": "/docs",
-    }
-
-
-# -------------------------------------------------
-# Register all prediction routes
-# -------------------------------------------------
-app.include_router(router)
+app = create_app()
