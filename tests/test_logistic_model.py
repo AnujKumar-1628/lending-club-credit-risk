@@ -1,11 +1,10 @@
 from credit_risk.models.logistic_model import LogisticSGDModel
 from credit_risk.features.build_features import FeatureBuilder
-from credit_risk.data.load_data import load_cleaned_data
 from credit_risk.data.split_data import DataSplitter
 
 
-def test_logistic_model_train_predict():
-    df = load_cleaned_data().head(5000)
+def test_logistic_model_train_predict(sample_cleaned_df):
+    df = sample_cleaned_df.head(5000)
 
     splitter = DataSplitter()
     train_df, val_df, _ = splitter.split(df)

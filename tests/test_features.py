@@ -1,10 +1,9 @@
 from credit_risk.features.build_features import FeatureBuilder
-from credit_risk.data.load_data import load_cleaned_data
 from credit_risk.data.split_data import DataSplitter
 
 
-def test_feature_builder_consistency():
-    df = load_cleaned_data().head(10000)
+def test_feature_builder_consistency(sample_cleaned_df):
+    df = sample_cleaned_df.head(10000)
 
     splitter = DataSplitter()
     train_df, val_df, _ = splitter.split(df)
