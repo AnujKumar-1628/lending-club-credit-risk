@@ -156,6 +156,23 @@ Two models are trained and compared:
 
 Metrics are computed on the validation split with a default threshold of 0.5.
 
+**ROC-AUC and KS across modeling, validation, and testing**
+| Stage | Logistic ROC-AUC | Logistic KS | XGBoost ROC-AUC | XGBoost KS |
+| --- | --- | --- | --- | --- |
+| Modeling | 0.6945 | 0.2794 | 0.7038 | 0.2928 |
+| Validation | 0.6987 | 0.2857 | 0.7343 | 0.3377 |
+| Testing | 0.697436 | 0.285869 | 0.709644 | 0.303781 |
+
+**Confusion matrix comparison across modeling, validation, and testing**
+| Stage | Model | TN | FP | FN | TP | Confusion Matrix (`[[TN, FP], [FN, TP]]`) |
+| --- | --- | --- | --- | --- | --- | --- |
+| Modeling | Logistic (SGD) | 142738 | 9109 | 40846 | 9103 | `[[142738, 9109], [40846, 9103]]` |
+| Modeling | XGBoost | 144786 | 7061 | 41745 | 8204 | `[[144786, 7061], [41745, 8204]]` |
+| Validation | Logistic (SGD) | 147259 | 4588 | 44155 | 5794 | `[[147259, 4588], [44155, 5794]]` |
+| Validation | XGBoost | 147518 | 4329 | 42630 | 7319 | `[[147518, 4329], [42630, 7319]]` |
+| Testing | Logistic (SGD) | 143300 | 15900 | 31359 | 11238 | `[[143300, 15900], [31359, 11238]]` |
+| Testing | XGBoost | 151515 | 7685 | 35489 | 7108 | `[[151515, 7685], [35489, 7108]]` |
+
 ## Project structure
 - `api/` FastAPI app and prediction routes
 - `data/` raw, processed, and sample splits
