@@ -173,6 +173,25 @@ Metrics are computed on the validation split with a default threshold of 0.5.
 | Testing | Logistic (SGD) | 143300 | 15900 | 31359 | 11238 | `[[143300, 15900], [31359, 11238]]` |
 | Testing | XGBoost | 151515 | 7685 | 35489 | 7108 | `[[151515, 7685], [35489, 7108]]` |
 
+
+## Hyperparameter tuning
+Two dedicated experiment notebooks were added to tune model hyperparameters without changing the production training scripts:
+- `notebooks/experiments/logistic_hyperparameter_experiments.ipynb`
+- `notebooks/experiments/xgboost_tuning_from_feature_pipeline.ipynb`
+
+These experiments are intentionally separate from `src/credit_risk/utils/config.py`, where stable baseline parameters are defined for reproducible training runs.
+
+**Experiment summary**
+| Model | Search method | ROC-AUC (from notebook) |
+| --- | --- | --- |
+| Logistic (SGD) | Exhaustive `ParameterGrid` | `0.696982` |
+| XGBoost | `RandomizedSearchCV` + `TimeSeriesSplit` | Best CV: `0.7314`; Holdout validation: `0.705311` |
+
+**Notes**
+- Tuning notebooks use `data/samples/train.parquet` and `data/samples/val.parquet` to reduce runtime and upload cost (especially on Colab).
+- Production training still uses baseline config values unless  explicitly update `src/credit_risk/utils/config.py`.
+
+
 ## Project structure
 - `api/` FastAPI app and prediction routes
 - `data/` raw, processed, and sample splits
