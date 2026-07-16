@@ -7,9 +7,18 @@ __pycache__/
 *.so
 
 # Data
-data/raw/
-data/processed/
-data/samples/
+data/raw/*
+!data/raw/.gitkeep
+!data/raw/.gitignore
+!data/raw/*.dvc
+data/processed/*
+!data/processed/.gitkeep
+!data/processed/.gitignore
+!data/processed/*.dvc
+data/samples/*
+!data/samples/.gitkeep
+!data/samples/.gitignore
+!data/samples/*.dvc
 .kaggle/
 
 
